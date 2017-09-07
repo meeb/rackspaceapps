@@ -1,7 +1,4 @@
 import unittest
-from base64 import b64encode
-from datetime import datetime
-from hashlib import sha1
 from rackspaceapps import RackspaceApps
 
 
