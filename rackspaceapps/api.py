@@ -4,6 +4,7 @@ from datetime import datetime
 from hashlib import sha1
 import requests
 from requests.exceptions import RequestException
+from . import domains, mailboxes
 
 
 class RackspaceAppsError(Exception):
@@ -16,24 +17,27 @@ class RackspaceApps:
     API_NETLOC = 'api.emailsrvr.com'
     API_VERSION = 'v1'
     USER_AGENT = 'rackspaceapps Python API client'
-    METHOD_GET = 'get'
-    METHOD_PUT = 'put'
-    METHOD_POST = 'post'
-    METHOD_DELETE = 'delete'
-    METHODS = (METHOD_GET, METHOD_PUT, METHOD_POST, METHOD_DELETE)
 
-    def __init__(self, user_key='', secret_key=''):
+    def __init__(self, user_key='', secret_key='', account_number=''):
         self._user_key = str(user_key)
         self._secret_key = str(secret_key)
+        self._account_number = str(account_number)
+        self._bootstrap()
 
-    def _build_resource(self, resource):
+    def _bootstrap(self):
+        self.list_domains = domains.list_domains(self)
+        self.add_domain = domains.add_domain(self)
+        self.edit_domain = domains.edit_domain(self)
+        self.delete_domain = domains.delete_domain(self)
+
+    def build_resource(self, resource):
         if not isinstance(resource, (list, tuple)):
             err = 'resource must be a list or a tuple, got: {}'
             raise RackspaceAppsError(err.format(type(resource)))
         uri = '{}/{}'.format(self.API_VERSION, '/'.join(resource))
         return urlunsplit((self.API_SCHEME, self.API_NETLOC, uri, '', ''))
 
-    def _build_signature(self):
+    def build_signature(self):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         data = self._user_key.encode()
         data += self.USER_AGENT.encode()
@@ -42,46 +46,9 @@ class RackspaceApps:
         signature = b64encode(sha1(data).digest()).decode()
         return '{}:{}:{}'.format(self._user_key, timestamp, signature)
 
-    def _build_session(self):
+    def build_session(self):
         session = requests.Session()
-        session.headers.update({'X-Api-Signature': self._build_signature(),
+        session.headers.update({'X-Api-Signature': self.build_signature(),
                                 'User-Agent': self.USER_AGENT,
                                 'Accept': 'application/json'})
         return session
-
-    def _request(self, resource):
-        '''
-            This is a fancy wrapper for requests.method(...) calls which limits
-            the available methods, handles the non-URI format resource and
-            pre-populates the session with the authentication headers.
-        '''
-        session = self._build_session()
-        url = self._build_resource(resource)
-
-        def resource_wrapper(method):
-            requests_func = getattr(session, method)
-
-            def resource_inner_wrapper():
-                try:
-                    response = requests_func(url)
-                    if response.status_code == 200:
-                        return response
-                    else:
-                        remote = response.headers.get('X-Error-Message', '???')
-                        err = 'Error making a "{}" request to: {} ({} / {})'
-                        err = err.format(method, url, response.status_code,
-                                         remote)
-                        raise RackspaceAppsError(err)
-                except RequestException as e:
-                    err = 'Error making a "{}" request to: {}'
-                    raise RackspaceAppsError(err.format(method, url)) from e
-
-            return resource_inner_wrapper
-
-        def requests_wrapper():
-            pass
-
-        rtn = requests_wrapper
-        for method in self.METHODS:
-            setattr(rtn, method, resource_wrapper(method))
-        return rtn
