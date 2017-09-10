@@ -4,7 +4,7 @@ from datetime import datetime
 from hashlib import sha1
 import requests
 from requests.exceptions import RequestException
-from . import domains, mailboxes
+from . import domains, rsemail
 
 
 class RackspaceAppsError(Exception):
@@ -25,10 +25,16 @@ class RackspaceApps:
         self._bootstrap()
 
     def _bootstrap(self):
+        # domain methods
         self.list_domains = domains.list_domains(self)
         self.add_domain = domains.add_domain(self)
         self.edit_domain = domains.edit_domain(self)
         self.delete_domain = domains.delete_domain(self)
+        # rsemail methods
+        self.list_rsemail = rsemail.list_rsemail(self)
+        self.add_rsemail = rsemail.add_rsemail(self)
+        self.edit_rsemail = rsemail.edit_rsemail(self)
+        self.delete_rsemail = rsemail.delete_rsemail(self)
 
     def build_resource(self, resource):
         if not isinstance(resource, (list, tuple)):
