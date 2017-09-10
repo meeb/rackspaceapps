@@ -44,8 +44,8 @@ rsa = RackspaceApps(user_key=user_key, secret_key=secret_key,
 
 domains = rsa.list_domains()
 for domain in domains:
-        domain_name = domain.get('name')
-        mailboxes = rsa.list_rsemail(domain_name=domain_name)
-        for mailbox in mailboxes:
-            print(domain_name, mailbox)
+  domain_name = domain.get('name')
+  mailboxes = rsa.list_rsemail(domain_name=domain_name)
+  for mailbox in mailboxes:
+    print(domain_name, mailbox)
 ```
