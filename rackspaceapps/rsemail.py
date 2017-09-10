@@ -44,6 +44,7 @@ def add_rsemail(api):
     session = api.build_session()
 
     def request():
+        # not implemented yet / not needed
         return {}
 
     return request
@@ -54,6 +55,7 @@ def edit_rsemail(api):
     session = api.build_session()
 
     def request():
+        # not implemented yet / not needed
         return {}
 
     return request
@@ -64,6 +66,7 @@ def delete_rsemail(api):
     session = api.build_session()
 
     def request():
+        # not implemented yet / not needed
         return {}
 
     return request
