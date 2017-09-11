@@ -4,7 +4,7 @@ from datetime import datetime
 from hashlib import sha1
 import requests
 from requests.exceptions import RequestException
-from . import domains, rsemail
+from . import domains, rsemail, aliases
 
 
 class RackspaceAppsError(Exception):
@@ -35,6 +35,11 @@ class RackspaceApps:
         self.add_rsemail = rsemail.add_rsemail(self)
         self.edit_rsemail = rsemail.edit_rsemail(self)
         self.delete_rsemail = rsemail.delete_rsemail(self)
+        # alias methods
+        self.list_aliases = aliases.list_aliases(self)
+        self.add_alias = aliases.add_alias(self)
+        self.edit_alias = aliases.edit_alias(self)
+        self.delete_alias = aliases.delete_alias(self)
 
     def build_resource(self, resource):
         if not isinstance(resource, (list, tuple)):
