@@ -23,7 +23,6 @@ def list_aliases(api):
                 data = response.json()
             except (ValueError, TypeError):
                 data = {}
-            print(data)
             if response.status_code != 200:
                 err = 'Expected 200, got: {} ({})'
                 raise UnexpectedStatusError(err.format(response.status_code,
@@ -66,8 +65,21 @@ def delete_alias(api):
 
     session = api.build_session()
 
-    def request():
-        # not implemented yet / not needed
-        return {}
+    def request(domain_name='', alias_name='', account_number=''):
+        if not account_number:
+            account_number = api._account_number
+        resource = ('customers', account_number, 'domains', domain_name, 'rs',
+                    'aliases', alias_name)
+        url = api.build_resource(resource)
+        response = session.delete(url)
+        try:
+            data = response.json()
+        except (ValueError, TypeError):
+            data = {}
+        if response.status_code != 200:
+            err = 'Expected 200, got: {} ({})'
+            raise UnexpectedStatusError(err.format(response.status_code,
+                                                   response.text))
+        return True
 
     return request
