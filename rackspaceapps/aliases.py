@@ -29,7 +29,7 @@ def list_aliases(api):
                 raise UnexpectedStatusError(err.format(response.status_code,
                                                        response.text))
             total = data.get('total', 0)
-            page_aliases = data.get('rsMailboxes', [])
+            page_aliases = data.get('aliases', [])
             aliases = aliases + page_aliases
             if offset + per_page > total:
                 break
