@@ -80,6 +80,6 @@ def delete_alias(api):
             err = 'Expected 200, got: {} ({})'
             raise UnexpectedStatusError(err.format(response.status_code,
                                                    response.text))
-        return True
+        return data
 
     return request
