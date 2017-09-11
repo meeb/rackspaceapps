@@ -30,7 +30,7 @@ def list_aliases(api):
                                                        response.text))
             total = data.get('total', 0)
             page_aliases = data.get('rsMailboxes', [])
-            aliases = aliases + page_mailboxes
+            aliases = aliases + page_aliases
             if offset + per_page > total:
                 break
             current_page += 1
