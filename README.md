@@ -24,7 +24,10 @@ RackspaceApps.add_domain(domain_name='example.com')
 RackspaceApps.edit_domain(domain_name='example.com', params={})
 RackspaceApps.delete_domain(domain_name='example.com')
 
-RackspaceApps.list_mailboxes(domain_name='example.com')
+RackspaceApps.list_rsemail(domain_name='example.com')
+
+RackspaceApps.list_aliases(domain_name='example.com')
+RackspaceApps.show_alias(domain_name='example.com', alias_name='example')
 ```
 
 ## Synopsis
