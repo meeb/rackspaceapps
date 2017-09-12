@@ -39,6 +39,30 @@ def list_aliases(api):
     return request
 
 
+def show_alias(api):
+
+    session = api.build_session()
+
+    def request(domain_name='', alias_name='', account_number=''):
+        if not account_number:
+            account_number = api._account_number
+        resource = ('customers', account_number, 'domains', domain_name, 'rs',
+                    'aliases', alias_name)
+        url = api.build_resource(resource)
+        response = session.get(url)
+        try:
+            data = response.json()
+        except (ValueError, TypeError):
+            data = {}
+        if response.status_code != 200:
+            err = 'Expected 200, got: {} ({})'
+            raise UnexpectedStatusError(err.format(response.status_code,
+                                                   response.text))
+        return data
+
+    return request
+
+
 def add_alias(api):
 
     session = api.build_session()

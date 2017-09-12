@@ -11,7 +11,7 @@ class TestRackspaceApps(unittest.TestCase):
                                  secret_key=self.test_secret_key)
 
     def test_rsemail_funcs(self):
-        alias_funcs = ('list_aliases', 'add_alias', 'edit_alias',
+        alias_funcs = ('list_aliases', 'show_alias', 'add_alias', 'edit_alias',
                        'delete_alias')
         for func_name in alias_funcs:
             func = getattr(self.rsa, func_name)

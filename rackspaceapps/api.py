@@ -37,6 +37,7 @@ class RackspaceApps:
         self.delete_rsemail = rsemail.delete_rsemail(self)
         # alias methods
         self.list_aliases = aliases.list_aliases(self)
+        self.show_alias = aliases.show_alias(self)
         self.add_alias = aliases.add_alias(self)
         self.edit_alias = aliases.edit_alias(self)
         self.delete_alias = aliases.delete_alias(self)
