@@ -1,4 +1,14 @@
+# DEPRECIATED
+
+**Please note**: this library will remain available for now, but it is no
+longer actively worked on or supported. It is likely upstream APIs at
+Rackspace will change at some point and this library will stop functioning.
+
+This repository and the library on PyPI may be deleted in the future.
+
+
 # rackspaceapps
+
 Python library for the Rackspace Email &amp; Apps API
 
 This is a partially implemented Python client for the Rackspace Email and Apps
